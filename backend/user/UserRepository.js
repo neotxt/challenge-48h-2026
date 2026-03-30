@@ -25,6 +25,12 @@ export class UserRepository {
         return this.users.find(u => u.id === parseInt(id));
     }
 
+
+    /**
+     * 
+     * @param {int} id 
+     * @returns 
+     */
     delete(id) {
         const index = this.users.findIndex(u => u.id === parseInt(id));
         if (index !== -1) {
