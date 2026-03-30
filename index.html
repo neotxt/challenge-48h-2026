@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusNet — Paris Ynov Campus</title>
+
+ 
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+  <header class="header">
+
+    <div class="header__gauche">
+      <div class="logo">
+        <span class="logo__initiales">Ynov</span>
+      </div>
+      <div>
+        <h1 class="titre-site">YFeeds</h1>
+        <p class="sous-titre-site">Paris Ynov Campus</p>
+      </div>
+    </div>
+
+    <nav class="navigation">
+      <a href="#" class="nav-lien nav-lien--actif">Accueil</a>
+      <a href="#" class="nav-lien">Messages</a>
+      <a href="#" class="nav-lien">Profil</a>
+    </nav>
+
+    <div class="header__droite">
+      <button class="bouton-header">Nouveau post</button>
+      <div class="avatar avatar--header">MA</div>
+    </div>
+
+  </header>
+
+  <!--CONTENU PRINCIPAL -->
+  <main class="grille-principale">
+
+    <!--COLONNE GAUCHE-->
+    <aside class="colonne-gauche">
+
+      <section class="carte">
+        <div class="profil-bandeau"></div>
+
+        <div class="profil-corps">
+          <div class="avatar avatar--grand">MA</div>
+          <p class="profil-nom">Minna A.</p>
+          <p class="profil-role">Développeuse Web · B2</p>
+
+          <div class="profil-stats">
+            <div class="stat">
+              <span class="stat__chiffre" id="compteur-posts">3</span>
+              <span class="stat__label">Posts</span>
+            </div>
+
+            <div class="stat__separateur"></div>
+
+            <div class="stat">
+              <span class="stat__chiffre">128</span>
+              <span class="stat__label">Connexions</span>
+            </div>
+          </div>
+
+          <a href="#" class="bouton-profil">Modifier le profil</a>
+        </div>
+      </section>
+
+      <section class="carte">
+        <h2 class="carte-titre">Tendances campus</h2>
+        <ul class="liste-tendances">
+          <li class="tendance">
+            <span class="tendance-tag">#Challenge48h</span>
+            <span class="tendance-compte">217 posts</span>
+          </li>
+          <li class="tendance">
+            <span class="tendance-tag">#Alternance2026</span>
+            <span class="tendance-compte">89 posts</span>
+          </li>
+          <li class="tendance">
+            <span class="tendance-tag">#ProjetWeb</span>
+            <span class="tendance-compte">64 posts</span>
+          </li>
+          <li class="tendance">
+            <span class="tendance-tag">#YnovParis</span>
+            <span class="tendance-compte">41 posts</span>
+          </li>
+        </ul>
+      </section>
+
+    </aside>
+
+    <!--COLONNE CENTRALE -->
+    <section class="colonne-centre">
+
+      <section class="carte composer-carte">
+        <div class="composer-haut">
+          <div class="avatar avatar--petit">MA</div>
+          <textarea
+            id="champ-post"
+            class="champ-post"
+            placeholder="Partage une actu, une idée, une recherche de groupe…"
+          ></textarea>
+        </div>
+
+        <div class="composer-bas">
+          <p class="composer-aide">Ctrl + Entrée pour publier rapidement</p>
+          <button id="bouton-publier" class="bouton-principal">Publier</button>
+        </div>
+      </section>
+
+      <div class="feed-entete">
+        <h2 class="feed-titre">Fil d'actualité</h2>
+        <span class="feed-badge" id="compteur-feed">3 posts</span>
+      </div>
+
+      <div id="conteneur-posts"></div>
+
+    </section>
+
+    <!--COLONNE DROITE -->
+    <aside class="colonne-droite">
+
+      <section class="carte">
+        <h2 class="carte-titre">News Ynov</h2>
+        <div id="conteneur-news"></div>
+      </section>
+
+    </aside>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
