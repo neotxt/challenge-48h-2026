@@ -21,4 +21,12 @@ export class UserService {
     getById(id) {
         return this.repository.findById(id);
     }
+
+    updateUser(id, data) {
+        return this.repository.update(id, data);
+    }
+
+    deleteUser(id) {
+        return this.repository.delete(id);
+    }
 }

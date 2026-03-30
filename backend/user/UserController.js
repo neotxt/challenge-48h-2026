@@ -27,4 +27,29 @@ export class UserController {
             res.end(JSON.stringify(newUser));
         });
     }
+
+    /** Gère PUT /users/:id */
+    handleUpdate(req, res, id) {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            const data = JSON.parse(body);
+            const updatedUser = this.userService.updateUser(id, data);
+
+            if (updatedUser) {
+                res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                res.end(JSON.stringify(updatedUser));
+            } else {
+                res.writeHead(404);
+                res.end(JSON.stringify({ message: "Utilisateur non trouvé" }));
+            }
+        });
+    }
+
+    /** Gère DELETE /users/:id */
+    handleDelete(req, res, id) {
+        const success = this.userService.deleteUser(id);
+        res.writeHead(success ? 200 : 404, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ success }));
+    }
 }
