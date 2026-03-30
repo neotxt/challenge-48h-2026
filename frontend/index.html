@@ -1,111 +1,137 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Test API POO</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusNet — Paris Ynov Campus</title>
 
-        section {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-
-        .user-item {
-            background: #f9f9f9;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #eee;
-        }
-
-        button {
-            cursor: pointer;
-            margin-left: 5px;
-        }
-    </style>
+ 
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <h1>Ma console de test</h1>
 
-    <section>
-        <h3>Ajouter un utilisateur</h3>
-        <input type="text" id="newName" placeholder="Nom">
-        <input type="email" id="newEmail" placeholder="Email">
-        <button onclick="addUser()">Envoyer (POST)</button>
+  <header class="header">
+
+    <div class="header__gauche">
+      <div class="logo">
+        <span class="logo__initiales">Ynov</span>
+      </div>
+      <div>
+        <h1 class="titre-site">YFeeds</h1>
+        <p class="sous-titre-site">Paris Ynov Campus</p>
+      </div>
+    </div>
+
+    <nav class="navigation">
+      <a href="#" class="nav-lien nav-lien--actif">Accueil</a>
+      <a href="#" class="nav-lien">Messages</a>
+      <a href="#" class="nav-lien">Profil</a>
+    </nav>
+
+    <div class="header__droite">
+      <button class="bouton-header">Nouveau post</button>
+      <div class="avatar avatar--header">MA</div>
+    </div>
+
+  </header>
+
+  <!--CONTENU PRINCIPAL -->
+  <main class="grille-principale">
+
+    <!--COLONNE GAUCHE-->
+    <aside class="colonne-gauche">
+
+      <section class="carte">
+        <div class="profil-bandeau"></div>
+
+        <div class="profil-corps">
+          <div class="avatar avatar--grand">MA</div>
+          <p class="profil-nom">Minna A.</p>
+          <p class="profil-role">Développeuse Web · B2</p>
+
+          <div class="profil-stats">
+            <div class="stat">
+              <span class="stat__chiffre" id="compteur-posts">3</span>
+              <span class="stat__label">Posts</span>
+            </div>
+
+            <div class="stat__separateur"></div>
+
+            <div class="stat">
+              <span class="stat__chiffre">128</span>
+              <span class="stat__label">Connexions</span>
+            </div>
+          </div>
+
+          <a href="#" class="bouton-profil">Modifier le profil</a>
+        </div>
+      </section>
+
+      <section class="carte">
+        <h2 class="carte-titre">Tendances campus</h2>
+        <ul class="liste-tendances">
+          <li class="tendance">
+            <span class="tendance-tag">#Challenge48h</span>
+            <span class="tendance-compte">217 posts</span>
+          </li>
+          <li class="tendance">
+            <span class="tendance-tag">#Alternance2026</span>
+            <span class="tendance-compte">89 posts</span>
+          </li>
+          <li class="tendance">
+            <span class="tendance-tag">#ProjetWeb</span>
+            <span class="tendance-compte">64 posts</span>
+          </li>
+          <li class="tendance">
+            <span class="tendance-tag">#YnovParis</span>
+            <span class="tendance-compte">41 posts</span>
+          </li>
+        </ul>
+      </section>
+
+    </aside>
+
+    <!--COLONNE CENTRALE -->
+    <section class="colonne-centre">
+
+      <section class="carte composer-carte">
+        <div class="composer-haut">
+          <div class="avatar avatar--petit">MA</div>
+          <textarea
+            id="champ-post"
+            class="champ-post"
+            placeholder="Partage une actu, une idée, une recherche de groupe…"
+          ></textarea>
+        </div>
+
+        <div class="composer-bas">
+          <p class="composer-aide">Ctrl + Entrée pour publier rapidement</p>
+          <button id="bouton-publier" class="bouton-principal">Publier</button>
+        </div>
+      </section>
+
+      <div class="feed-entete">
+        <h2 class="feed-titre">Fil d'actualité</h2>
+        <span class="feed-badge" id="compteur-feed">3 posts</span>
+      </div>
+
+      <div id="conteneur-posts"></div>
+
     </section>
 
-    <section>
-        <h3>Utilisateurs en base <button onclick="loadUsers()">Rafraîchir (GET)</button></h3>
-        <div id="userList">Cliquez sur rafraîchir...</div>
-    </section>
+    <!--COLONNE DROITE -->
+    <aside class="colonne-droite">
 
-    <script>
-        const API_URL = 'http://localhost:3000/users';
+      <section class="carte">
+        <h2 class="carte-titre">News Ynov</h2>
+        <div id="conteneur-news"></div>
+      </section>
 
-        // 1. GET - Récupérer tous les utilisateurs
-        async function loadUsers() {
-            const res = await fetch(API_URL);
-            const users = await res.json();
-            const container = document.getElementById('userList');
+    </aside>
 
-            container.innerHTML = users.length === 0 ? "Aucun utilisateur." : "";
+  </main>
 
-            users.forEach(u => {
-                const div = document.createElement('div');
-                div.className = 'user-item';
-                div.innerHTML = `
-                    <strong>ID ${u.id}:</strong> ${u.name} (${u.email})
-                    <button onclick="updateUser(${u.id})">Modifier Nom (PUT)</button>
-                    <button onclick="deleteUser(${u.id})" style="color:red">Supprimer (DELETE)</button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        // 2. POST - Créer un utilisateur
-        async function addUser() {
-            const name = document.getElementById('newName').value;
-            const email = document.getElementById('newEmail').value;
-
-            await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password: '123', role: 'etudiant' })
-            });
-
-            loadUsers();
-        }
-
-        // 3. DELETE - Supprimer un utilisateur
-        async function deleteUser(id) {
-            await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-            loadUsers();
-        }
-
-        // 4. PUT - Modifier (On change juste le nom pour le test)
-        async function updateUser(id) {
-            const newName = prompt("Nouveau nom :");
-            if (!newName) return;
-
-            await fetch(`${API_URL}/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: newName })
-            });
-            loadUsers();
-        }
-
-        // Chargement initial
-        loadUsers();
-    </script>
+  <script src="script.js"></script>
 </body>
-
 </html>

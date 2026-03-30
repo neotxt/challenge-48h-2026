@@ -13,37 +13,37 @@ export class UserRoles {
  */
 export class User {
     /**
-     * @param {number} _id 
-     * @param {string} _name 
-     * @param {string} _email 
-     * @param {string} _password 
-     * @param {string} _role 
+     * @param {number} id 
+     * @param {string} name 
+     * @param {string} email 
+     * @param {string} password 
+     * @param {string} role 
      */
     constructor(id, name, email, password, role = UserRoles.ETUDIANT) {
-        this._id = id;
-        this._name = name;
-        this._email = email;
-        this._password = password;
-        this._role = role;
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     getID() {
-        return this._id;
+        return this.id;
     }
 
     getName() {
-        return this._name;
+        return this.name;
     }
 
     getEmail() {
-        return this._email;
+        return this.email;
     }
 
     getPassword() {
-        return this._password;
+        return this.password;
     }
 
     getRole() {
-        return this._role;
+        return this.role;
     }
 }
