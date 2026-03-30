@@ -1,0 +1,135 @@
+/* --- LOGIN PAGE STYLE --- */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    background-color: #f9f9f9; /* Fond très légèrement gris pour faire ressortir la box blanche */
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+.login-box {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-logo {
+    font-size: 24px;
+    font-weight: 900;
+    text-decoration: none;
+    color: #000;
+    letter-spacing: -1px;
+}
+
+.login-logo span { color: #2ecc71; }
+
+.login-header h1 {
+    font-size: 22px;
+    margin: 20px 0 10px;
+    color: #1a1a1a;
+}
+
+.login-header p {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Formulaire */
+.input-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #2ecc71;
+}
+
+/* Gestion du mot de passe */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999;
+}
+
+.forgot-link {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    color: #2ecc71;
+    text-decoration: none;
+    margin-top: 8px;
+}
+
+/* Bouton */
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background-color: #000; /* Noir comme Ynov */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.btn-login:hover {
+    background-color: #2ecc71; /* Devient vert au survol */
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+    color: #666;
+}
+
+.login-footer a {
+    color: #2ecc71;
+    text-decoration: none;
+    font-weight: 600;
+}
