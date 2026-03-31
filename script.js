@@ -1,17 +1,4 @@
-/* ============================================================
-   SCRIPT.JS — CampusNet
-   
-   3 classes :
-     1. Post      → un post du fil d'actualité
-     2. News      → une actualité Ynov
-     3. AppFeed   → le chef d'orchestre de l'application
-============================================================ */
 
-
-
-/* ============================================================
-   CLASSE 1 : Post
-============================================================ */
 class Post {
 
   constructor(auteur, contenu, date) {
@@ -38,11 +25,6 @@ class Post {
   }
 }
 
-
-
-/* ============================================================
-   CLASSE 2 : News
-============================================================ */
 class News {
 
   constructor(titre, date, description, badge) {
@@ -53,11 +35,6 @@ class News {
   }
 }
 
-
-
-/* ============================================================
-   CLASSE 3 : AppFeed — l'application principale
-============================================================ */
 class AppFeed {
 
   constructor() {
@@ -143,17 +120,6 @@ class AppFeed {
   }
 
 
-  /* ============================================================
-     MÉTHODE : supprimerPost(idPost)
-     
-     Supprime un post du tableau en cherchant son ID.
-     
-     "filter" crée un NOUVEAU tableau sans l'élément qu'on veut supprimer.
-     Exemple : [1, 2, 3].filter(x => x !== 2) → [1, 3]
-     
-     On affiche ensuite une confirmation avant de supprimer,
-     pour éviter les suppressions accidentelles.
-  ============================================================ */
   supprimerPost(idPost) {
 
     /* On demande confirmation à l'utilisateur */
