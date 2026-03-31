@@ -2,6 +2,10 @@
 
 Une plateforme sociale pour les étudiants Ynov - Fil d'actualité, messagerie, profil utilisateur et assistance IA intégrée.
 
+## Groupe 10
+
+Néo, Mayles, Lucas et Minna
+
 ## 🚀 Quick Start
 
 ### Prérequis
