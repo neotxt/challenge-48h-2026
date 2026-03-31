@@ -127,3 +127,26 @@ body, html {
         gap: 0;
     }
 }
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 40px; /* Laisse de la place pour l'icône */
+}
+
+.password-wrapper i {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s;
+}
+
+.password-wrapper i:hover {
+    color: #2ecc71; /* Petit rappel de ton vert Ynov au survol */
+}
