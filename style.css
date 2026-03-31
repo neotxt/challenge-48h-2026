@@ -154,7 +154,8 @@ body {
 .avatar--grand {
   width: 68px;
   height: 68px;
-  margin: -34px auto 0;
+  /* Sort à moitié du bandeau pour l'effet chevauchement */
+  margin: -34px auto 12px;
   border: 4px solid var(--white);
   font-size: 20px;
 }
@@ -176,7 +177,7 @@ body {
   display: grid;
   grid-template-columns: 260px 1fr 300px;
   gap: 20px;
-  align-items: start;
+  align-items: start; /* Les 3 colonnes commencent toutes en haut */
 }
 
 /* ===== Cards ===== */
@@ -192,6 +193,17 @@ body {
 .carte {
   padding: 20px;
   margin-bottom: 16px;
+}
+
+/* Carte profil : pas de padding en haut pour que le bandeau soit flush */
+.carte--profil {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* On remet le padding sur le corps de la carte profil uniquement */
+.carte--profil .profil-corps {
+  padding: 0 20px 20px;
 }
 
 .carte-titre {
@@ -210,12 +222,12 @@ body {
   height: 72px;
   background: linear-gradient(135deg, #1f8f84,#00ae9c);
   border-radius: var(--radius) var(--radius) 0 0;
-  margin: -20px -20px 0;
+  margin: 0;
 }
 
 .profil-corps {
   text-align: center;
-  padding-top: 14px;
+  padding-top: 0;
 }
 
 .profil-nom {
