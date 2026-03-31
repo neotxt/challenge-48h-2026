@@ -1,10 +1,10 @@
-import db from '../../database/db-config.js';
+import db from '../database/db-config.js';
 
 /**
  * Gère l'accès aux données via PostgreSQL (Persistence).
  */
 export class UserRepository {
-    
+
     /**
      * Enregistre un nouvel utilisateur dans la base de données.
      * @param {Object} user 
@@ -13,7 +13,7 @@ export class UserRepository {
         console.log("Tentative d'enregistrement de :", user);
         const query = 'INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *';
         const values = [user.name, user.email, user.password, user.role];
-        
+
         try {
             const res = await db.query(query, values);
             return res.rows[0]; // Retourne l'utilisateur inséré avec son ID

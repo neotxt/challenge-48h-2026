@@ -1,4 +1,4 @@
-import db from '../../database/db-config.js';
+import db from '../database/db-config.js';
 
 export class PostRepository {
     async save(post) {
