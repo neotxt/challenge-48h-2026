@@ -4,66 +4,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CampusNet — Paris Ynov Campus</title>
-
- 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-
   <header class="header">
-
     <div class="header__gauche">
-      <div class="logo">
-        <span class="logo__initiales">Ynov</span>
-      </div>
+      <div class="logo"><span class="logo__initiales">CN</span></div>
       <div>
-        <h1 class="titre-site">YFeeds</h1>
+        <h1 class="titre-site">CampusNet</h1>
         <p class="sous-titre-site">Paris Ynov Campus</p>
       </div>
     </div>
-
     <nav class="navigation">
       <a href="#" class="nav-lien nav-lien--actif">Accueil</a>
       <a href="#" class="nav-lien">Messages</a>
       <a href="#" class="nav-lien">Profil</a>
+      <a href="#" class="nav-lien">Ymatch</a>
     </nav>
-
     <div class="header__droite">
       <button class="bouton-header">Nouveau post</button>
       <div class="avatar avatar--header">MA</div>
     </div>
-
   </header>
 
-  <!--CONTENU PRINCIPAL -->
   <main class="grille-principale">
 
-    <!--COLONNE GAUCHE-->
+    <!-- COLONNE GAUCHE -->
     <aside class="colonne-gauche">
 
       <section class="carte">
         <div class="profil-bandeau"></div>
-
         <div class="profil-corps">
           <div class="avatar avatar--grand">MA</div>
           <p class="profil-nom">Minna A.</p>
           <p class="profil-role">Développeuse Web · B2</p>
-
           <div class="profil-stats">
             <div class="stat">
               <span class="stat__chiffre" id="compteur-posts">3</span>
               <span class="stat__label">Posts</span>
             </div>
-
             <div class="stat__separateur"></div>
-
             <div class="stat">
               <span class="stat__chiffre">128</span>
               <span class="stat__label">Connexions</span>
             </div>
           </div>
-
           <a href="#" class="bouton-profil">Modifier le profil</a>
         </div>
       </section>
@@ -71,40 +59,23 @@
       <section class="carte">
         <h2 class="carte-titre">Tendances campus</h2>
         <ul class="liste-tendances">
-          <li class="tendance">
-            <span class="tendance-tag">#Challenge48h</span>
-            <span class="tendance-compte">217 posts</span>
-          </li>
-          <li class="tendance">
-            <span class="tendance-tag">#Alternance2026</span>
-            <span class="tendance-compte">89 posts</span>
-          </li>
-          <li class="tendance">
-            <span class="tendance-tag">#ProjetWeb</span>
-            <span class="tendance-compte">64 posts</span>
-          </li>
-          <li class="tendance">
-            <span class="tendance-tag">#YnovParis</span>
-            <span class="tendance-compte">41 posts</span>
-          </li>
+          <li class="tendance"><span class="tendance-tag">#Challenge48h</span><span class="tendance-compte">217 posts</span></li>
+          <li class="tendance"><span class="tendance-tag">#Alternance2026</span><span class="tendance-compte">89 posts</span></li>
+          <li class="tendance"><span class="tendance-tag">#ProjetWeb</span><span class="tendance-compte">64 posts</span></li>
+          <li class="tendance"><span class="tendance-tag">#YnovParis</span><span class="tendance-compte">41 posts</span></li>
         </ul>
       </section>
 
     </aside>
 
-    <!--COLONNE CENTRALE -->
+    <!-- COLONNE CENTRALE -->
     <section class="colonne-centre">
 
       <section class="carte composer-carte">
         <div class="composer-haut">
           <div class="avatar avatar--petit">MA</div>
-          <textarea
-            id="champ-post"
-            class="champ-post"
-            placeholder="Partage une actu, une idée, une recherche de groupe…"
-          ></textarea>
+          <textarea id="champ-post" class="champ-post" placeholder="Partage une actu, une idée, une recherche de groupe…"></textarea>
         </div>
-
         <div class="composer-bas">
           <p class="composer-aide">Ctrl + Entrée pour publier rapidement</p>
           <button id="bouton-publier" class="bouton-principal">Publier</button>
@@ -120,12 +91,32 @@
 
     </section>
 
-    <!--COLONNE DROITE -->
+    <!-- COLONNE DROITE -->
     <aside class="colonne-droite">
 
       <section class="carte">
         <h2 class="carte-titre">News Ynov</h2>
         <div id="conteneur-news"></div>
+      </section>
+
+      <section class="carte">
+        <h2 class="carte-titre">Offres Ymatch</h2>
+        <div class="liste-offres">
+          <a href="#" class="offre">
+            <div class="offre-logo">DS</div>
+            <div class="offre-info"><p class="offre-poste">Développeur Full-Stack</p><p class="offre-entreprise">DataSpark · Alternance</p></div>
+            <span class="badge-new">New</span>
+          </a>
+          <a href="#" class="offre">
+            <div class="offre-logo offre-logo--violet">UX</div>
+            <div class="offre-info"><p class="offre-poste">Designer UX/UI</p><p class="offre-entreprise">PixelCraft · Stage</p></div>
+          </a>
+          <a href="#" class="offre">
+            <div class="offre-logo offre-logo--orange">AI</div>
+            <div class="offre-info"><p class="offre-poste">Ingénieur IA</p><p class="offre-entreprise">NeuralHub · CDI</p></div>
+          </a>
+        </div>
+        <a href="#" class="bouton-contour">Voir toutes les offres →</a>
       </section>
 
     </aside>
