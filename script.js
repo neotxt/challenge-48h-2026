@@ -1,48 +1,82 @@
-/* Classe Post */
+/* ============================================================
+   SCRIPT.JS — CampusNet
+   
+   3 classes :
+     1. Post      → un post du fil d'actualité
+     2. News      → une actualité Ynov
+     3. AppFeed   → le chef d'orchestre de l'application
+============================================================ */
+
+
+
+/* ============================================================
+   CLASSE 1 : Post
+============================================================ */
 class Post {
-  constructor(auteur, contenu, date, tags = []) {
-    this.id = Date.now() + Math.random();
-    this.auteur = auteur;
-    this.contenu = contenu;
-    this.date = date;
-    this.tags = tags;
-    this.reponses = [];
+
+  constructor(auteur, contenu, date) {
+    /* ID unique pour retrouver ce post plus tard */
+    this.id       = Date.now() + Math.random();
+    this.auteur   = auteur;
+    this.contenu  = contenu;
+    this.date     = date;
+
+    /* Génère automatiquement les initiales : "Sarah M." → "SM" */
+    this.initiales = this._genererInitiales(auteur);
+
     this.likes = 0;
-    this.aime = false;
+    this.aime  = false;
+  }
+
+  _genererInitiales(nom) {
+    return nom
+      .split(" ")
+      .map(mot => mot[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
   }
 }
 
-/* Classe News */
+
+
+/* ============================================================
+   CLASSE 2 : News
+============================================================ */
 class News {
-  constructor(titre, date, description, badge = "") {
-    this.titre = titre;
-    this.date = date;
+
+  constructor(titre, date, description, badge) {
+    this.titre       = titre;
+    this.date        = date;
     this.description = description;
-    this.badge = badge;
+    this.badge       = badge;
   }
 }
 
-/*Application principale*/
+
+
+/* ============================================================
+   CLASSE 3 : AppFeed — l'application principale
+============================================================ */
 class AppFeed {
+
   constructor() {
+
     this.posts = [
       new Post(
         "Sarah M.",
-        "Quelqu’un cherche un développeur front pour le challenge 48h ? Je suis dispo 🚀",
-        "30/03/2026 • 14:20",
-        ["Projet", "Dev"]
+        "Quelqu'un cherche un développeur front pour le challenge 48h ? Je suis dispo 🚀",
+        "30/03/2026 • 14:20"
       ),
       new Post(
         "Lucas T.",
-        "Je peux partager mes notes de SQL à ceux qui en ont besoin. DM moi !",
-        "30/03/2026 • 13:05",
-        ["Entraide", "SQL"]
+        "Je peux partager mes notes complètes de SQL à ceux qui en ont besoin. DM moi !",
+        "30/03/2026 • 13:05"
       ),
       new Post(
         "Inès R.",
-        "Super opportunité d'alternance en data science repérée ce matin !",
-        "30/03/2026 • 10:42",
-        ["Alternance", "Data"]
+        "Super opportunité d'alternance en data science sur Ymatch ce matin !",
+        "30/03/2026 • 10:42"
       )
     ];
 
@@ -50,249 +84,197 @@ class AppFeed {
     this.posts[1].likes = 8;
     this.posts[2].likes = 22;
 
-    this.news = [
-      new News(
-        "Challenge 48h",
-        "31 mars 2026",
-        "Sprint intensif pour créer le réseau social du campus.",
-        "🔥 Live"
-      ),
-      new News(
-        "Forum Alternance",
-        "12 avril 2026",
-        "Rencontres avec des recruteurs. Préparez vos CV !",
-        "📅 Bientôt"
-      ),
-      new News(
-        "Soirée BDE",
-        "5 avril 2026",
-        "Grande soirée de printemps. Entrée gratuite pour les étudiants.",
-        "🎉 BDE"
-      ),
-      new News(
-        "Tournoi BDS",
-        "8 avril 2026",
-        "Tournoi inter-campus. Inscriptions avant le 3 avril.",
-        "⚽ BDS"
-      )
+    this.newsList = [
+      new News("Challenge 48h",   "31 mars 2026",  "Sprint intensif pour créer le réseau social du campus !", "🔥 Live"),
+      new News("Forum Alternance","12 avril 2026", "Rencontres avec des recruteurs. Préparez vos CVs !",      "📅 Bientôt"),
+      new News("Soirée BDE",      "5 avril 2026",  "Grande soirée de printemps. Entrée gratuite étudiants Ynov.", "🎉 BDE"),
+      new News("Tournoi BDS",     "8 avril 2026",  "Tournoi inter-campus de basketball. Inscriptions avant le 3 avril.", "⚽ BDS")
     ];
 
-    this.zonePosts = document.getElementById("conteneur-posts");
-    this.zoneNews = document.getElementById("conteneur-news");
-    this.inputPost = document.getElementById("champ-post");
-    this.btnPublier = document.getElementById("bouton-publier");
-    this.compteurPosts = document.getElementById("compteur-posts");
-    this.compteurFeed = document.getElementById("compteur-feed");
-    this.btnHeader = document.querySelector(".bouton-header");
+    this.conteneurPosts = document.getElementById("conteneur-posts");
+    this.conteneurNews  = document.getElementById("conteneur-news");
+    this.champPost      = document.getElementById("champ-post");
+    this.boutonPublier  = document.getElementById("bouton-publier");
+    this.compteurPosts  = document.getElementById("compteur-posts");
+    this.compteurFeed   = document.getElementById("compteur-feed");
 
     this.demarrer();
   }
 
-  /* Lancement*/
+
   demarrer() {
     this.afficherPosts();
     this.afficherNews();
+    this.ecouterEvenements();
     this.mettreAJourCompteurs();
-
-    this.btnPublier.addEventListener("click", () => this.creerPost());
-
-    this.inputPost.addEventListener("keydown", (e) => {
-      if (e.ctrlKey && e.key === "Enter") {
-        this.creerPost();
-      }
-    });
-
-    if (this.btnHeader) {
-      this.btnHeader.addEventListener("click", () => this.inputPost.focus());
-    }
   }
 
-  /*Création d’un post*/
-  creerPost() {
-    const texte = this.inputPost.value.trim();
 
-    if (!texte) {
-      this.btnPublier.classList.add("bouton--secouer");
-      setTimeout(() => {
-        this.btnPublier.classList.remove("bouton--secouer");
-      }, 400);
+  ecouterEvenements() {
+    this.boutonPublier.addEventListener("click", () => this.creerPost());
+
+    this.champPost.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && e.key === "Enter") this.creerPost();
+    });
+  }
+
+
+  creerPost() {
+    const texte = this.champPost.value.trim();
+
+    if (texte === "") {
+      this.boutonPublier.classList.add("bouton--secouer");
+      setTimeout(() => this.boutonPublier.classList.remove("bouton--secouer"), 400);
       return;
     }
 
-    const maintenant = new Date();
-    const date =
+    const maintenant   = new Date();
+    const dateFormatee =
       maintenant.toLocaleDateString("fr-FR") +
       " • " +
-      maintenant.toLocaleTimeString("fr-FR", {
-        hour: "2-digit",
-        minute: "2-digit"
-      });
+      maintenant.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
 
-    const tags = this.trouverTags(texte);
-    const nouveauPost = new Post("Moi", texte, date, tags);
-
+    const nouveauPost = new Post("Moi", texte, dateFormatee);
     this.posts.unshift(nouveauPost);
-    this.inputPost.value = "";
 
-    this.mettreAJour();
+    this.champPost.value = "";
+    this.afficherPosts();
+    this.mettreAJourCompteurs();
   }
 
-  /*Trouver des tags simples*/
-  trouverTags(texte) {
-    const t = texte.toLowerCase();
-    const tags = [];
 
-    if (t.includes("alternance") || t.includes("stage")) tags.push("Alternance");
-    if (t.includes("projet") || t.includes("challenge") || t.includes("groupe")) tags.push("Projet");
-    if (t.includes("aide") || t.includes("entraide") || t.includes("partage")) tags.push("Entraide");
-    if (t.includes("sql")) tags.push("SQL");
-    if (t.includes("data")) tags.push("Data");
-    if (t.includes("dev") || t.includes("front") || t.includes("back")) tags.push("Dev");
+  /* ============================================================
+     MÉTHODE : supprimerPost(idPost)
+     
+     Supprime un post du tableau en cherchant son ID.
+     
+     "filter" crée un NOUVEAU tableau sans l'élément qu'on veut supprimer.
+     Exemple : [1, 2, 3].filter(x => x !== 2) → [1, 3]
+     
+     On affiche ensuite une confirmation avant de supprimer,
+     pour éviter les suppressions accidentelles.
+  ============================================================ */
+  supprimerPost(idPost) {
 
-    return tags.length ? tags : ["Général"];
+    /* On demande confirmation à l'utilisateur */
+    const confirmation = confirm("Veux-tu vraiment supprimer ce post ?");
+
+    /* Si l'utilisateur clique "Annuler", on s'arrête */
+    if (!confirmation) return;
+
+    /* On garde tous les posts SAUF celui avec cet id */
+    this.posts = this.posts.filter(post => post.id !== idPost);
+
+    /* On réaffiche les posts et on met à jour les compteurs */
+    this.afficherPosts();
+    this.mettreAJourCompteurs();
   }
 
-  /*Like */
-  basculerLike(id) {
-    const post = this.posts.find((p) => p.id === id);
+
+  basculerLike(idPost) {
+    const post = this.posts.find(p => p.id === idPost);
     if (!post) return;
 
-    post.aime = !post.aime;
+    post.aime  = !post.aime;
     post.likes = post.aime ? post.likes + 1 : post.likes - 1;
 
     this.afficherPosts();
   }
 
-  /* Réponse*/
-  ajouterReponse(id) {
-    const texte = prompt("Écris ta réponse :");
-    if (!texte || !texte.trim()) return;
-
-    const post = this.posts.find((p) => p.id === id);
-    if (!post) return;
-
-    post.reponses.push({
-      auteur: "Moi",
-      contenu: texte.trim()
-    });
-
-    this.afficherPosts();
-  }
-
-  /*  Mise à jour générale*/
-  mettreAJour() {
-    this.afficherPosts();
-    this.mettreAJourCompteurs();
-  }
 
   mettreAJourCompteurs() {
     const total = this.posts.length;
     this.compteurPosts.textContent = total;
-    this.compteurFeed.textContent = total > 1 ? `${total} posts` : `${total} post`;
+    this.compteurFeed.textContent  = total + " post" + (total > 1 ? "s" : "");
   }
 
-  /*Affichage des posts*/
+
   afficherPosts() {
-    this.zonePosts.innerHTML = "";
+    this.conteneurPosts.innerHTML = "";
 
     if (this.posts.length === 0) {
-      this.zonePosts.innerHTML = `
+      this.conteneurPosts.innerHTML = `
         <div class="message-vide">
-          Aucun post pour l’instant. Sois le premier à publier !
+          Aucun post pour l'instant. Sois le premier à publier !
         </div>
       `;
       return;
     }
 
-    this.posts.forEach((post) => {
+    this.posts.forEach(post => {
       const carte = document.createElement("article");
-      carte.className = "post-carte";
+      carte.classList.add("post-carte");
+
+      const classeLike = post.aime ? "bouton-like bouton-like--actif" : "bouton-like";
+
+      /* On affiche le bouton supprimer SEULEMENT sur les posts de "Moi" */
+      /* Les posts des autres utilisateurs ne peuvent pas être supprimés */
+      const boutonSupprimerHtml = post.auteur === "Moi"
+        ? `<button class="bouton-supprimer" onclick="app.supprimerPost(${post.id})" title="Supprimer ce post">
+             🗑 Supprimer
+           </button>`
+        : "";
 
       carte.innerHTML = `
         <div class="post-carte__haut">
-          <div class="post-avatar">${this.initiales(post.auteur)}</div>
-
+          <div class="post-avatar">${this.escapeHtml(post.initiales)}</div>
           <div class="post-meta">
-            <span class="post-auteur">${this.securiser(post.auteur)}</span>
-            <span class="post-date">${this.securiser(post.date)}</span>
+            <span class="post-auteur">${this.escapeHtml(post.auteur)}</span>
+            <span class="post-date">${this.escapeHtml(post.date)}</span>
           </div>
         </div>
 
-        <div class="post-contenu">${this.securiser(post.contenu)}</div>
-
-        <div class="post-tags">
-          ${post.tags.map((tag) => `<span class="tag-post">#${this.securiser(tag)}</span>`).join("")}
-        </div>
+        <div class="post-contenu">${this.escapeHtml(post.contenu)}</div>
 
         <div class="post-actions">
-          <button class="${post.aime ? "bouton-like bouton-like--actif" : "bouton-like"}" data-like="${post.id}">
+          <button class="${classeLike}" onclick="app.basculerLike(${post.id})">
             ♥ <span>${post.likes}</span>
           </button>
+          <button class="bouton-repondre">💬 Répondre</button>
 
-          <button class="bouton-repondre" data-reponse="${post.id}">
-            💬 Répondre (${post.reponses.length})
-          </button>
-        </div>
-
-        <div class="post-reponses">
-          ${post.reponses.map((r) => `
-            <div class="reponse-item">
-              <span class="reponse-auteur">${this.securiser(r.auteur)}</span>
-              <span class="reponse-contenu">${this.securiser(r.contenu)}</span>
-            </div>
-          `).join("")}
+          <!-- Bouton supprimer affiché uniquement sur MES posts -->
+          ${boutonSupprimerHtml}
         </div>
       `;
 
-      carte.querySelector("[data-like]").addEventListener("click", () => {
-        this.basculerLike(post.id);
-      });
-
-      carte.querySelector("[data-reponse]").addEventListener("click", () => {
-        this.ajouterReponse(post.id);
-      });
-
-      this.zonePosts.appendChild(carte);
+      this.conteneurPosts.appendChild(carte);
     });
   }
 
-  /*Affichage des news */
-  afficherNews() {
-    this.zoneNews.innerHTML = "";
 
-    this.news.forEach((news) => {
+  afficherNews() {
+    this.conteneurNews.innerHTML = "";
+
+    this.newsList.forEach(news => {
       const carte = document.createElement("article");
-      carte.className = "news-carte";
+      carte.classList.add("news-carte");
+
+      const badgeHtml = news.badge
+        ? `<span class="news-badge">${this.escapeHtml(news.badge)}</span>`
+        : "";
 
       carte.innerHTML = `
-        ${news.badge ? `<span class="news-badge">${this.securiser(news.badge)}</span>` : ""}
-        <p class="news-titre">${this.securiser(news.titre)}</p>
-        <p class="news-date">📅 ${this.securiser(news.date)}</p>
-        <p class="news-description">${this.securiser(news.description)}</p>
+        ${badgeHtml}
+        <p class="news-titre">${this.escapeHtml(news.titre)}</p>
+        <p class="news-date">📅 ${this.escapeHtml(news.date)}</p>
+        <p class="news-description">${this.escapeHtml(news.description)}</p>
       `;
 
-      this.zoneNews.appendChild(carte);
+      this.conteneurNews.appendChild(carte);
     });
   }
 
-  /* Outils */
-  initiales(nom) {
-    return nom
-      .split(" ")
-      .map((mot) => mot[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
-  }
 
-  securiser(texte) {
+  escapeHtml(texte) {
     const div = document.createElement("div");
     div.textContent = texte;
     return div.innerHTML;
   }
 }
 
-/*  Lancement*/
+
+/* Lance l'application quand la page est prête */
+let app;
 document.addEventListener("DOMContentLoaded", () => {
-  new AppFeed();
+  app = new AppFeed();
 });
