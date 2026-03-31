@@ -1,57 +1,86 @@
+import db from '../../database/db-config.js';
+
 /**
- * Gère l'accès aux données (Persistence).
+ * Gère l'accès aux données via PostgreSQL (Persistence).
  */
 export class UserRepository {
-    constructor() {
-        this.users = []; // Simulation de base de données
-    }
-
+    
     /**
-     * Enregistre un nouvel utilisateur dans la bdd
-     * @param {User} user 
-     * @returns 
+     * Enregistre un nouvel utilisateur dans la base de données.
+     * @param {Object} user 
      */
-    save(user) {
-        user.id = this.users.length + 1;
-        this.users.push(user);
-        return user;
-    }
-
-    findAll() {
-        return this.users;
-    }
-
-    findById(id) {
-        return this.users.find(u => u.id === parseInt(id));
-    }
-
-
-    /**
-     * 
-     * @param {int} id 
-     * @returns 
-     */
-    delete(id) {
-        const index = this.users.findIndex(u => u.id === parseInt(id));
-        if (index !== -1) {
-            this.users.splice(index, 1);
-            return true;
+    async save(user) {
+        console.log("Tentative d'enregistrement de :", user);
+        const query = 'INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *';
+        const values = [user.name, user.email, user.password, user.role];
+        
+        try {
+            const res = await db.query(query, values);
+            return res.rows[0]; // Retourne l'utilisateur inséré avec son ID
+        } catch (err) {
+            console.error("Erreur lors du save :", err);
+            throw err;
         }
-        return false;
     }
 
     /**
-     * Met à jour un utilisateur.
+     * Récupère tous les utilisateurs.
      */
-    update(id, data) {
-        const user = this.findById(id);
-        if (user) {
-            user.name = data.name || user.name;
-            user.email = data.email || user.email;
-            user.role = data.role || user.role;
-            return user;
+    async findAll() {
+        try {
+            const res = await db.query('SELECT id, username as name, email, role, promo FROM users ORDER BY id ASC');
+            return res.rows;
+        } catch (err) {
+            console.error("Erreur lors du findAll :", err);
+            return [];
         }
-        return null;
     }
 
+    /**
+     * Trouve un utilisateur par son ID.
+     */
+    async findById(id) {
+        try {
+            const res = await db.query('SELECT id, username as name, email, role, promo FROM users WHERE id = $1', [parseInt(id)]);
+            return res.rows[0];
+        } catch (err) {
+            console.error("Erreur lors du findById :", err);
+            return null;
+        }
+    }
+
+    /**
+     * Supprime un utilisateur par son ID.
+     */
+    async delete(id) {
+        try {
+            const res = await db.query('DELETE FROM users WHERE id = $1', [parseInt(id)]);
+            return res.rowCount > 0; // Retourne true si une ligne a été supprimée
+        } catch (err) {
+            console.error("Erreur lors du delete :", err);
+            return false;
+        }
+    }
+
+    /**
+     * Met à jour un utilisateur dans la DB.
+     */
+    async update(id, data) {
+        const query = `
+            UPDATE users 
+            SET username = COALESCE($1, username), 
+                email = COALESCE($2, email), 
+                role = COALESCE($3, role) 
+            WHERE id = $4 
+            RETURNING id, username as name, email, role`;
+        const values = [data.name, data.email, data.role, parseInt(id)];
+
+        try {
+            const res = await db.query(query, values);
+            return res.rows[0];
+        } catch (err) {
+            console.error("Erreur lors de l'update :", err);
+            return null;
+        }
+    }
 }

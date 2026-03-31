@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription | Ynov Community</title>
+    <link rel="stylesheet" href="../static/css/inscription.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap">
+</head>
+<body>
+<div class="registration-container">
+    <div class="auth-box">
+        <div class="auth-header">
+            <a href="index.html" class="logo">YNOV<span>COMMUNITY</span></a>
+            <h1>Créer un compte</h1>
+            <p>Rejoignez la plateforme étudiante.</p>
+        </div>
+
+       <form id="registerForm">
+    <div class="input-row">
+        <div class="input-group">
+            <label>Prénom</label>
+            <!-- Ajout de name="name" (on combine prénom/nom pour ton champ username) -->
+            <input type="text" name="name" placeholder="Jean" required>
+        </div>
+        <div class="input-group">
+            <label>Nom</label>
+            <input type="text" placeholder="Dupont" required>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>Email Ynov</label>
+        <!-- Ajout de name="email" -->
+        <input type="email" name="email" placeholder="prenom.nom@ynov.com" required>
+    </div>
+
+    <div class="input-group">
+        <label>Mot de passe</label>
+        <!-- Ajout de name="password" -->
+        <input type="password" name="password" placeholder="••••••••" required>
+    </div>
+
+    <button type="submit" class="btn-primary">S'inscrire</button>
+</form>
+
+        <div class="auth-footer">
+            <p>Déjà un compte ? <a href="login.html">Se connecter</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // On récupère les données grâce aux fameux "name" qu'on vient d'ajouter
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+        const response = await fetch('/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            alert("Inscription réussie !");
+            window.location.href = '/login.html';
+        } else {
+            alert("Erreur serveur : vérifie ton terminal Node.");
+        }
+    } catch (error) {
+        console.error("Erreur connexion :", error);
+    }
+});
+</script>
+
+</body>
+</html>

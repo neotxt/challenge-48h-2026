@@ -1,0 +1,129 @@
+/* --- STYLE GLOBAL --- */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff; /* Fond blanc pur */
+}
+
+.registration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* LA BOX AVEC BORDURE (Comme ton login) */
+.auth-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background: #ffffff;
+    border: 1px solid #eeeeee; /* La petite bordure grise */
+    border-radius: 12px;       /* Angles arrondis modernes */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Ombre très légère */
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 900;
+    text-decoration: none;
+    color: #000;
+    letter-spacing: -1px;
+}
+
+.logo span { color: #2ecc71; }
+
+.auth-header h1 {
+    font-size: 22px;
+    margin: 15px 0 5px 0;
+    font-weight: 800;
+}
+
+.auth-header p {
+    color: #888;
+    font-size: 14px;
+}
+
+/* FORMULAIRE */
+.input-row {
+    display: flex;
+    gap: 15px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #2ecc71;
+    box-shadow: 0 0 0 2px rgba(46, 204, 113, 0.1);
+}
+
+/* BOUTON NOIR -> VERT */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #2ecc71;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.auth-footer a {
+    color: #2ecc71;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 480px) {
+    .auth-box {
+        border: none;      /* On enlève la bordure sur mobile pour gagner de la place */
+        box-shadow: none;
+    }
+    .input-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}

@@ -1,9 +1,18 @@
-// backend/post/Post.js
+/**
+ * 
+ */
 export class Post {
+    /**
+     * 
+     * @param {*} id 
+     * @param {*} auteur 
+     * @param {*} contenu 
+     * @param {*} date 
+     */
     constructor(id, auteur, contenu, date = new Date().toLocaleString()) {
         this.id = id;
-        this.auteur = auteur; // Correspond au frontend
-        this.contenu = contenu; // Correspond au frontend
+        this.auteur = auteur;
+        this.contenu = contenu;
         this.date = date;
         this.likes = 0;
     }

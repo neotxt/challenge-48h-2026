@@ -26,24 +26,4 @@ export class User {
         this.password = password;
         this.role = role;
     }
-
-    getID() {
-        return this.id;
-    }
-
-    getName() {
-        return this.name;
-    }
-
-    getEmail() {
-        return this.email;
-    }
-
-    getPassword() {
-        return this.password;
-    }
-
-    getRole() {
-        return this.role;
-    }
 }

@@ -17,16 +17,24 @@ export class UserController {
     /**
      * Gère la création d'un utilisateur (POST /users).
      */
-    handleCreate(req, res) {
-        let body = '';
-        req.on('data', chunk => { body += chunk.toString(); });
-        req.on('end', () => {
+    async handleCreate(req, res) { // AJOUTE async ICI
+    let body = '';
+    req.on('data', chunk => { body += chunk.toString(); });
+    req.on('end', async () => { // AJOUTE async ICI AUSSI
+        try {
             const data = JSON.parse(body);
-            const newUser = this.userService.create(data);
+            // AJOUTE await ICI
+            const newUser = await this.userService.create(data); 
+            
             res.writeHead(201, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
             res.end(JSON.stringify(newUser));
-        });
-    }
+        } catch (err) {
+            console.error("Erreur détaillée :", err);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: err.message }));
+        }
+    });
+}
 
     /** Gère PUT /users/:id */
     handleUpdate(req, res, id) {
