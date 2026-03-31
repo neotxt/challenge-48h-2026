@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ynov Community - Messages</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/messages.css">
+</head>
+
+<body>
+    <header class="messages-header">
+        <a href="feed.html" class="brand" aria-label="Retour au feed">
+            <img src="../static/assets/img/logo.png" alt="Ynov" class="brand-logo">
+            <div class="brand-text">
+                <span class="brand-name">YNOV</span>
+                <span class="brand-sub">COMMUNITY</span>
+            </div>
+        </a>
+        <div class="header-right">
+            <button id="btn-back" class="btn btn-outline">Retour au feed</button>
+            <div class="avatar" id="avatar-header">?</div>
+        </div>
+    </header>
+
+    <main class="messages-layout">
+        <aside class="contacts-panel" aria-label="Liste des contacts">
+            <h1>Messagerie</h1>
+            <p class="subtitle">Choisis un contact pour lancer une conversation</p>
+            <div id="contacts-list" class="contacts-list"></div>
+        </aside>
+
+        <section class="chat-panel" aria-label="Conversation en cours">
+            <div class="chat-topbar">
+                <h2 id="chat-title">Aucun contact sélectionné</h2>
+            </div>
+
+            <div id="chat-messages" class="chat-messages">
+                <p class="empty">Sélectionne un contact pour afficher la conversation.</p>
+            </div>
+
+            <form id="chat-form" class="chat-form">
+                <textarea id="message-input" placeholder="Écris ton message..." required></textarea>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </form>
+        </section>
+    </main>
+
+    <script type="module" src="../static/js/messages.js"></script>
+</body>
+
+</html>

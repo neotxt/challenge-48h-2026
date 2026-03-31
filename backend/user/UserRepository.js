@@ -1,51 +1,98 @@
+import dbInstance from '../database/db-config.js';
+
 /**
- * Gère l'accès aux données (Persistence).
+ * Gère l'accès aux données via PostgreSQL (Persistence).
  */
 export class UserRepository {
-    constructor() {
-        this.users = []; // Simulation de base de données
+
+    /**
+     * Enregistre un nouvel utilisateur dans la base de données.
+     * @param {Object} user 
+     */
+    async save(user) {
+        console.log("Tentative d'enregistrement de :", user);
+        const query = 'INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *';
+        const values = [user.name, user.email, user.password, user.role];
+
+        try {
+            const res = await dbInstance.query(query, values);
+            return res.rows[0]; // Retourne l'utilisateur inséré avec son ID
+        } catch (err) {
+            console.error("Erreur lors du save :", err);
+            throw err;
+        }
     }
 
     /**
-     * Enregistre un nouvel utilisateur dans la bdd
-     * @param {User} user 
-     * @returns 
+     * Récupère tous les utilisateurs.
      */
-    save(user) {
-        user.id = this.users.length + 1;
-        this.users.push(user);
-        return user;
-    }
-
-    findAll() {
-        return this.users;
-    }
-
-    findById(id) {
-        return this.users.find(u => u.id === parseInt(id));
-    }
-
-    delete(id) {
-        const index = this.users.findIndex(u => u.id === parseInt(id));
-        if (index !== -1) {
-            this.users.splice(index, 1);
-            return true;
+    async findAll() {
+        try {
+            const res = await dbInstance.query('SELECT id, username as name, email, role, promo FROM users ORDER BY id ASC');
+            return res.rows;
+        } catch (err) {
+            console.error("Erreur lors du findAll :", err);
+            return [];
         }
-        return false;
     }
 
     /**
-     * Met à jour un utilisateur.
+     * Trouve un utilisateur par son ID.
      */
-    update(id, data) {
-        const user = this.findById(id);
-        if (user) {
-            user.name = data.name || user.name;
-            user.email = data.email || user.email;
-            user.role = data.role || user.role;
-            return user;
+    async findById(id) {
+        try {
+            const res = await dbInstance.query('SELECT id, username as name, email, role, promo FROM users WHERE id = $1', [Number.parseInt(id)]);
+            return res.rows[0];
+        } catch (err) {
+            console.error("Erreur lors du findById :", err);
+            return null;
         }
-        return null;
     }
 
+    /**
+     * Supprime un utilisateur par son ID.
+     */
+    async delete(id) {
+        try {
+            const res = await dbInstance.query('DELETE FROM users WHERE id = $1', [Number.parseInt(id)]);
+            return res.rowCount > 0; // Retourne true si une ligne a été supprimée
+        } catch (err) {
+            console.error("Erreur lors du delete :", err);
+            return false;
+        }
+    }
+
+    /**
+     * Met à jour un utilisateur dans la DB.
+     */
+    async update(id, data) {
+        const query = `
+            UPDATE users 
+            SET username = COALESCE($1, username), 
+                email = COALESCE($2, email), 
+                role = COALESCE($3, role),
+                password = COALESCE($4, password)
+            WHERE id = $5 
+            RETURNING id, username as name, email, role, promo`;
+        const values = [data.name, data.email, data.role, data.hashedPassword || null, Number.parseInt(id)];
+
+        try {
+            const res = await dbInstance.query(query, values);
+            return res.rows[0];
+        } catch (err) {
+            console.error("Erreur lors de l'update :", err);
+            return null;
+        }
+    }
+
+    async findByEmail(email) {
+        try {
+            const query = 'SELECT id, username AS name, email, password, role, promo FROM users WHERE email = $1';
+            const res = await dbInstance.query(query, [email]);
+            return res.rows[0]; // Renvoie l'utilisateur s'il existe, sinon undefined
+        } catch (err) {
+            console.error("Erreur findByEmail :", err);
+            return null;
+        }
+    }
 }

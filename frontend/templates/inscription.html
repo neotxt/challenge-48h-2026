@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription | Ynov Community</title>
+    <link rel="stylesheet" href="../static/css/inscription.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap">
+</head>
+
+<body>
+    <div class="registration-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <a href="index.html" class="logo">YNOV<span>COMMUNITY</span></a>
+                <h1>Créer un compte</h1>
+                <p>Rejoignez la plateforme étudiante.</p>
+            </div>
+
+            <form id="registerForm" action="feed.html">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Prénom</label>
+                        <input type="text" name="firstname" placeholder="Jean" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Nom</label>
+                        <input type="text" name="lastname" placeholder="Dupont" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Email Ynov</label>
+                    <input type="email" name="email" placeholder="prenom.nom@ynov.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Mot de passe</label>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-primary">S'inscrire</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Déjà un compte ? <a href="login.html">Se connecter</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            // 1. On bloque le rechargement de la page !
+            e.preventDefault();
+
+            // 2. On récupère les données
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            // 3. On prépare l'envoi
+            const dataToSend = {
+                name: data.firstname + " " + data.lastname,
+                email: data.email,
+                password: data.password
+            };
+
+            // 4. On appelle le serveur Node.js
+            try {
+                const response = await fetch('/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataToSend)
+                });
+
+                if (response.ok) {
+                    alert("Inscription réussie ! Connectez-vous maintenant.");
+                    window.location.href = 'login.html';
+                } else {
+                    const errorMsg = await response.json();
+                    alert("Erreur lors de l'inscription : " + (errorMsg.error || "inconnue"));
+                }
+            } catch (error) {
+                console.error("Erreur serveur :", error);
+                alert("Impossible de contacter le serveur.");
+            }
+        });
+    </script>
+</body>
+
+</html>
