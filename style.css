@@ -386,13 +386,49 @@ body {
   padding: 4px 10px;
 }
 
-#conteneur-posts,
+/* ===== Conteneur news (inchangé) ===== */
 #conteneur-news {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
+/* ===== Conteneur posts — scroll activé ===== */
+#conteneur-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  /* Le scroll s'active à partir de cette hauteur */
+  max-height: 75vh;
+
+  /* Scroll vertical uniquement, apparaît seulement si nécessaire */
+  overflow-y: auto;
+
+  /* Espace à droite pour que la scrollbar ne cache pas les cartes */
+  padding-right: 6px;
+}
+
+/* Style de la barre de scroll personnalisée (Chrome, Safari, Edge) */
+#conteneur-posts::-webkit-scrollbar {
+  width: 5px; /* Barre fine et discrète */
+}
+
+#conteneur-posts::-webkit-scrollbar-track {
+  background: var(--soft);     /* Piste : gris clair */
+  border-radius: 999px;
+}
+
+#conteneur-posts::-webkit-scrollbar-thumb {
+  background: var(--green-border); /* Curseur : vert pâle */
+  border-radius: 999px;
+}
+
+#conteneur-posts::-webkit-scrollbar-thumb:hover {
+  background: var(--green);        /* Curseur vert vif au survol */
+}
+
+/* ===== Posts ===== */
 .post-carte {
   padding: 18px;
 }
@@ -426,6 +462,7 @@ body {
 
 .post-actions {
   display: flex;
+  align-items: center;
   gap: 8px;
   padding-top: 12px;
   border-top: 1px solid var(--border);
@@ -453,6 +490,29 @@ body {
 .bouton-repondre:hover {
   background: var(--soft);
   color: var(--text);
+}
+
+/* ===== Bouton supprimer ===== */
+.bouton-supprimer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto; /* Poussé à droite */
+  background: none;
+  border: 1px solid #f2b5b5;
+  color: #d94b4b;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bouton-supprimer:hover {
+  background: #d94b4b;
+  color: white;
+  border-color: #d94b4b;
 }
 
 /* ===== News ===== */
