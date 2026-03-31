@@ -1,4 +1,4 @@
-import db from '../database/db-config.js';
+import dbInstance from '../database/db-config.js';
 
 /**
  * Gère l'accès aux données via PostgreSQL (Persistence).
@@ -15,7 +15,7 @@ export class UserRepository {
         const values = [user.name, user.email, user.password, user.role];
 
         try {
-            const res = await db.query(query, values);
+            const res = await dbInstance.query(query, values);
             return res.rows[0]; // Retourne l'utilisateur inséré avec son ID
         } catch (err) {
             console.error("Erreur lors du save :", err);
@@ -28,7 +28,7 @@ export class UserRepository {
      */
     async findAll() {
         try {
-            const res = await db.query('SELECT id, username as name, email, role, promo FROM users ORDER BY id ASC');
+            const res = await dbInstance.query('SELECT id, username as name, email, role, promo FROM users ORDER BY id ASC');
             return res.rows;
         } catch (err) {
             console.error("Erreur lors du findAll :", err);
@@ -41,7 +41,7 @@ export class UserRepository {
      */
     async findById(id) {
         try {
-            const res = await db.query('SELECT id, username as name, email, role, promo FROM users WHERE id = $1', [parseInt(id)]);
+            const res = await dbInstance.query('SELECT id, username as name, email, role, promo FROM users WHERE id = $1', [Number.parseInt(id)]);
             return res.rows[0];
         } catch (err) {
             console.error("Erreur lors du findById :", err);
@@ -54,7 +54,7 @@ export class UserRepository {
      */
     async delete(id) {
         try {
-            const res = await db.query('DELETE FROM users WHERE id = $1', [parseInt(id)]);
+            const res = await dbInstance.query('DELETE FROM users WHERE id = $1', [Number.parseInt(id)]);
             return res.rowCount > 0; // Retourne true si une ligne a été supprimée
         } catch (err) {
             console.error("Erreur lors du delete :", err);
@@ -70,16 +70,28 @@ export class UserRepository {
             UPDATE users 
             SET username = COALESCE($1, username), 
                 email = COALESCE($2, email), 
-                role = COALESCE($3, role) 
-            WHERE id = $4 
-            RETURNING id, username as name, email, role`;
-        const values = [data.name, data.email, data.role, parseInt(id)];
+                role = COALESCE($3, role),
+                password = COALESCE($4, password)
+            WHERE id = $5 
+            RETURNING id, username as name, email, role, promo`;
+        const values = [data.name, data.email, data.role, data.hashedPassword || null, Number.parseInt(id)];
 
         try {
-            const res = await db.query(query, values);
+            const res = await dbInstance.query(query, values);
             return res.rows[0];
         } catch (err) {
             console.error("Erreur lors de l'update :", err);
+            return null;
+        }
+    }
+
+    async findByEmail(email) {
+        try {
+            const query = 'SELECT id, username AS name, email, password, role, promo FROM users WHERE email = $1';
+            const res = await dbInstance.query(query, [email]);
+            return res.rows[0]; // Renvoie l'utilisateur s'il existe, sinon undefined
+        } catch (err) {
+            console.error("Erreur findByEmail :", err);
             return null;
         }
     }

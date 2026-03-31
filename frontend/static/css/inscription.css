@@ -1,10 +1,12 @@
 /* --- STYLE GLOBAL --- */
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     height: 100%;
     font-family: 'Inter', sans-serif;
-    background-color: #ffffff; /* Fond blanc pur */
+    background-color: #ffffff;
+    /* Fond blanc pur */
 }
 
 .registration-container {
@@ -20,9 +22,12 @@ body, html {
     max-width: 400px;
     padding: 40px;
     background: #ffffff;
-    border: 1px solid #eeeeee; /* La petite bordure grise */
-    border-radius: 12px;       /* Angles arrondis modernes */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Ombre très légère */
+    border: 1px solid #eeeeee;
+    /* La petite bordure grise */
+    border-radius: 12px;
+    /* Angles arrondis modernes */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    /* Ombre très légère */
 }
 
 .auth-header {
@@ -38,7 +43,9 @@ body, html {
     letter-spacing: -1px;
 }
 
-.logo span { color: #2ecc71; }
+.logo span {
+    color: #2ecc71;
+}
 
 .auth-header h1 {
     font-size: 22px;
@@ -119,11 +126,38 @@ body, html {
 /* RESPONSIVE MOBILE */
 @media (max-width: 480px) {
     .auth-box {
-        border: none;      /* On enlève la bordure sur mobile pour gagner de la place */
+        border: none;
+        /* On enlève la bordure sur mobile pour gagner de la place */
         box-shadow: none;
     }
+
     .input-row {
         flex-direction: column;
         gap: 0;
     }
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 40px;
+    /* Laisse de la place pour l'icône */
+}
+
+.password-wrapper i {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s;
+}
+
+.password-wrapper i:hover {
+    color: #2ecc71;
+    /* Petit rappel de ton vert Ynov au survol */
 }

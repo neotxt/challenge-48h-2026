@@ -1,37 +1,40 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
-import { exec } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { UserController } from "./user/UserController.js";
 import { PostController } from "./post/PostController.js";
+import { MessageController } from "./messagerie/MessageController.js";
 import { AiService } from "./ai/AiService.js";
 
+// --- ASTUCE MAGIQUE POUR LES CHEMINS ---
+// __dirname pointera TOUJOURS sur le dossier "backend", de manière absolue.
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const userController = new UserController();
 const postController = new PostController();
+const messageController = new MessageController();
 const aiService = new AiService();
 
+const server = http.createServer(async (req, res) => {
+    const requestUrl = new URL(req.url, 'http://localhost:3000');
+    const pathname = requestUrl.pathname;
 
-const server = http.createServer((req, res) => {
-    const urlParts = req.url.split('/');
-    const extension = path.extname(req.url);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    // 1. GESTION DES FICHIERS STATIQUES (FRONTEND)
-    // On sert les fichiers depuis le dossier racine ou /frontend selon leur emplacement
-    if (req.url === '/' || req.url === '/index.html' || extension === '.css' || extension === '.js') {
-        const fileName = (req.url === '/' || req.url === '/index.html') ? 'index.html' : req.url;
+    if (req.method === 'OPTIONS') {
+        res.writeHead(204);
+        res.end();
+        return;
+    }
 
-        // On cherche d'abord dans /frontend/ puis à la racine
-        let filePath = path.join(process.cwd(), 'frontend', fileName);
-        if (!fs.existsSync(filePath)) {
-            filePath = path.join(process.cwd(), fileName);
-        }
-
-        const mimeTypes = {
-            '.html': 'text/html',
-            '.css': 'text/css',
-            '.js': 'text/javascript'
-        };
+    // --- GESTION DES FICHIERS STATIQUES (CSS, JS, IMAGES) ---
+    if (pathname.startsWith('/static/') || pathname.startsWith('/js/')) {
+        // ✅ On part de "backend", on remonte ("..") et on va dans "frontend"
+        const filePath = path.join(__dirname, '..', 'frontend', pathname);
 
         fs.readFile(filePath, (err, data) => {
             if (err) {
@@ -39,64 +42,121 @@ const server = http.createServer((req, res) => {
                 res.end("Fichier statique non trouvé");
                 return;
             }
-            res.writeHead(200, { 'Content-Type': mimeTypes[extension] || 'text/html' });
+            const ext = path.extname(filePath).toLowerCase();
+            const mimeTypes = {
+                '.css': 'text/css',
+                '.js': 'text/javascript',
+                '.png': 'image/png',
+                '.jpg': 'image/jpeg',
+                '.svg': 'image/svg+xml'
+            };
+            res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'application/octet-stream' });
             res.end(data);
         });
         return;
     }
 
-    // 2. ROUTAGE API - UTILISATEURS (/users)
-    if (urlParts[1] === 'users') {
-        const id = urlParts[2];
-        if (!id) {
-            if (req.method === 'GET') return userController.handleGetAll(req, res);
-            if (req.method === 'POST') return userController.handleCreate(req, res);
-        } else {
-            if (req.method === 'PUT') return userController.handleUpdate(req, res, id);
-            if (req.method === 'DELETE') return userController.handleDelete(req, res, id);
-        }
+    // --- API : AMÉLIORATION IA ---
+    if (pathname === '/api/ai/improve' && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', async () => {
+            try {
+                const { text } = JSON.parse(body);
+                const improved = await aiService.ameliorerTexte(text);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ improvedText: improved }));
+            } catch (err) {
+                console.error('Erreur IA :', err);
+                res.writeHead(500);
+                res.end(JSON.stringify({ error: "Erreur IA" }));
+            }
+        });
+        return;
     }
 
-    // 3. ROUTAGE API - POSTS (/posts)
-    if (urlParts[1] === 'posts') {
-        const id = urlParts[2];
-        if (!id) {
-            // Récupérer tous les posts ou en créer un
-            if (req.method === 'GET') return postController.handleGetAll(req, res);
-            if (req.method === 'POST') return postController.handleCreate(req, res);
-        } else {
-            // Modifier ou supprimer un post spécifique par son ID
-            if (req.method === 'PUT') return postController.handleUpdate(req, res, id);
-            if (req.method === 'DELETE') return postController.handleDelete(req, res, id);
-        }
+    // --- API : VÉRIFICATION MODÉRATION (CONTENU TOXIQUE) ---
+    if (pathname === '/api/ai/check-toxic' && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', async () => {
+            try {
+                const { text } = JSON.parse(body);
+                const isToxic = await aiService.isToxic(text);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ isToxic, text }));
+            } catch (err) {
+                console.error('Erreur modération :', err);
+                res.writeHead(500);
+                res.end(JSON.stringify({ error: "Erreur modération" }));
+            }
+        });
+        return;
     }
 
-    if (urlParts[1] === 'ai' && urlParts[2] === 'assist') {
-        if (req.method === 'POST') {
-            let body = '';
-            req.on('data', chunk => { body += chunk.toString(); });
-            req.on('end', async () => {
-                const data = JSON.parse(body);
-                const texteAmeliore = await aiService.ameliorerTexte(data.texte);
-                
-                res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
-                res.end(JSON.stringify({ resultat: texteAmeliore }));
-            });
-        }
-}
+    // --- API : GESTION DES USERS ---
+    if (pathname === '/users' || pathname === '/api/users') {
+        if (req.method === 'GET') return userController.handleGetAll(req, res);
+        if (req.method === 'POST') return userController.handleCreate(req, res);
+    }
 
-    // 4. ERREUR 404
-    res.writeHead(404, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ message: "Route non trouvée" }));
+    // --- API : MISE À JOUR D'UN UTILISATEUR ---
+    const userIdMatch = pathname.match(/^\/api\/users\/(\d+)$/);
+    if (userIdMatch && req.method === 'PUT') {
+        const userId = userIdMatch[1];
+        return userController.handleUpdate(req, res, userId);
+    }
+
+    // --- API : GESTION DES POSTS ---
+    if (pathname === '/posts' || pathname === '/api/posts') {
+        if (req.method === 'GET') return postController.handleGetAll(req, res);
+        if (req.method === 'POST') return postController.handleCreate(req, res);
+    }
+
+    // --- API : GESTION DE LA MESSAGERIE ---
+    if (pathname === '/api/messages' && req.method === 'POST') {
+        return messageController.handleSend(req, res);
+    }
+
+    if (pathname === '/api/messages/conversation' && req.method === 'GET') {
+        return messageController.handleGetConversation(req, res, requestUrl);
+    }
+
+    if (pathname === '/api/messages/conversations' && req.method === 'GET') {
+        return messageController.handleGetConversations(req, res, requestUrl);
+    }
+
+    if (pathname === '/api/messages/read' && req.method === 'PUT') {
+        return messageController.handleMarkAsRead(req, res, requestUrl);
+    }
+
+    // --- CHARGEMENT DES PAGES HTML ---
+    const templates = ['/', '/index.html', '/login.html', '/inscription.html', '/feed.html', '/edit-profil.html', '/messages.html'];
+    if (templates.includes(pathname)) {
+        let fileName = (pathname === '/' || pathname === '/index.html') ? 'index.html' : pathname;
+        if (fileName.startsWith('/')) fileName = fileName.substring(1);
+
+        // ✅ On part de "backend", on remonte ("..") et on va dans "frontend/templates"
+        const filePath = path.join(__dirname, '..', 'frontend', 'templates', fileName);
+
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                res.writeHead(404);
+                res.end("Page HTML non trouvée");
+                return;
+            }
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(data);
+        });
+        return;
+    }
+
+    if (pathname === '/api/login' && req.method === 'POST') {
+        return userController.handleLogin(req, res);
+    }
+
+    res.writeHead(404);
+    res.end(JSON.stringify({ message: "Route non trouvée : " + pathname }));
 });
 
-const PORT = 3000;
-const URL = `http://localhost:${PORT}`;
-
-server.listen(PORT, () => {
-    console.log(`✅ Serveur YFeeds lancé sur ${URL}`);
-
-    // Ouvre automatiquement le navigateur
-    const start = (process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open');
-    exec(`${start} ${URL}`);
-});
+server.listen(3000, () => console.log("🚀 Serveur lancé sur http://localhost:3000"));

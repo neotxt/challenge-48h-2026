@@ -4,12 +4,12 @@ const { Pool } = pkg;
 class Database {
     constructor() {
         if (Database.instance) return Database.instance;
-        
+
         this.pool = new Pool({
             user: 'postgres',
             host: 'localhost',
             database: 'ynov_community',
-            password: 'Bzmq1234',
+            password: 'Neo3379!',
             port: 5432,
         });
 

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ynov Community - Modifier le profil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/profile.css">
+</head>
+
+<body>
+    <header class="profile-header">
+        <a href="feed.html" class="brand" aria-label="Retour au feed">
+            <img src="../static/assets/img/logo.png" alt="Ynov" class="brand-logo">
+            <div class="brand-text">
+                <span class="brand-name">YNOV</span>
+                <span class="brand-sub">COMMUNITY</span>
+            </div>
+        </a>
+        <div class="avatar" id="avatar-header">?</div>
+    </header>
+
+    <main class="profile-container">
+        <section class="profile-card">
+            <h2>Modifier mon profil</h2>
+
+            <div id="alert-container"></div>
+
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="name">Nom complet</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Ton nom" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email (non modifiable)</label>
+                        <input type="email" id="email" class="form-control" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Rôle / Promo</label>
+                        <input type="text" id="role" name="role" class="form-control" placeholder="Ex: Étudiant B2">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Nouveau mot de passe</label>
+                    <input type="password" id="password" name="password" class="form-control"
+                        placeholder="Laisse vide pour ne pas changer">
+                </div>
+
+                <div class="button-group">
+                    <a href="feed.html" class="btn btn-secondary">Annuler</a>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script type="module">
+        const currentUserRaw = localStorage.getItem('currentUser');
+        if (!currentUserRaw) {
+            globalThis.location.href = 'login.html';
+        }
+
+        const currentUser = JSON.parse(currentUserRaw);
+        const form = document.getElementById('profileForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const roleInput = document.getElementById('role');
+        const passwordInput = document.getElementById('password');
+        const alertContainer = document.getElementById('alert-container');
+        const avatarHeader = document.getElementById('avatar-header');
+
+        // Remplir les champs avec les données actuelles
+        nameInput.value = currentUser.name || '';
+        emailInput.value = currentUser.email || '';
+        roleInput.value = currentUser.role || '';
+        if (avatarHeader) {
+            avatarHeader.textContent = (currentUser.name || '?').charAt(0).toUpperCase();
+        }
+
+        function showAlert(message, type = 'success') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const updatedData = {
+                name: nameInput.value.trim(),
+                email: emailInput.value,
+                role: roleInput.value.trim()
+            };
+
+            if (passwordInput.value.trim()) {
+                updatedData.password = passwordInput.value;
+            }
+
+            // ✅ NOUVELLE: Vérifier la modération du nom et du rôle
+            try {
+                const textToCheck = `${updatedData.name} ${updatedData.role}`;
+                const modCheckResponse = await fetch('/api/ai/check-toxic', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: textToCheck })
+                });
+                const modCheckData = await modCheckResponse.json();
+
+                if (modCheckData.isToxic) {
+                    showAlert('⚠️ Le contenu de votre profil contient des éléments inappropriés. Veuillez les corriger.', 'error');
+                    return;
+                }
+            } catch (err) {
+                console.error('Erreur de vérification modération:', err);
+                // Continuer malgré l'erreur de vérification
+            }
+
+            try {
+                const response = await fetch(`/api/users/${encodeURIComponent(currentUser.id)}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedData)
+                });
+
+                if (response.ok) {
+                    const updatedUser = await response.json();
+                    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+                    showAlert('Profil mis à jour avec succès!', 'success');
+                    setTimeout(() => {
+                        globalThis.location.href = 'feed.html';
+                    }, 1500);
+                } else {
+                    const errorData = await response.json();
+                    showAlert(`Erreur: ${errorData.error || 'Impossible de mettre à jour le profil'}`, 'error');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showAlert('Erreur de connexion. Vérifiez votre connexion.', 'error');
+            }
+        });
+    </script>
+</body>
+
+</html>

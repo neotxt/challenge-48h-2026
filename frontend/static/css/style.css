@@ -11,7 +11,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 90px; /* Augmenté pour laisser respirer le logo */
+    height: 90px;
+    /* Augmenté pour laisser respirer le logo */
     padding: 0 3rem;
     background-color: #ffffff;
     border-bottom: 1px solid #e5e7eb;
@@ -27,7 +28,8 @@ body {
 }
 
 .nav-logo {
-    height: 70px; /* Taille pro pour le logo */
+    height: 70px;
+    /* Taille pro pour le logo */
     width: auto;
     object-fit: contain;
 }
@@ -57,29 +59,27 @@ body {
     font-weight: 700;
     font-size: 13px;
     padding: 12px 28px;
-    border-radius: 50px;
+    border-radius: 10px;
     text-transform: uppercase;
     transition: all 0.3s ease;
     border: 2px solid transparent;
 }
 
 .btn-outline {
-    color: #2ecc71;
-    border-color: #2ecc71;
-}
-
-.btn-outline:hover {
-    background-color: rgba(46, 204, 113, 0.05);
-    transform: translateY(-2px);
+    background-color: #2ecc71;
+    /* Vert clair pour Connexion */
+    color: #ffffff;
 }
 
 .btn-light-green {
-    background-color: #4ade80; /* Vert clair pour Connexion */
-    color: #14532d;
+    background-color: #2ecc71;
+    /* Vert clair pour Connexion */
+    color: #ffffff;
 }
 
 .btn-dark-green {
-    background-color: #2ecc71; /* Vert Ynov pour Inscription */
+    background-color: #2ecc71;
+    /* Vert Ynov pour Inscription */
     color: #ffffff;
 }
 
@@ -118,7 +118,8 @@ body {
 
 /* ── SECTION YNOV COMMUNITY (ABOUT) ── */
 .ynov-community-section {
-    padding: 100px 5%; /* On redonne un peu d'air au-dessus et en-dessous */
+    padding: 100px 5%;
+    /* On redonne un peu d'air au-dessus et en-dessous */
     background-color: #ffffff;
 }
 
@@ -126,17 +127,21 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 80px; /* On augmente l'espace pour que l'image ne colle pas au texte */
-    max-width: 3000px; /* On élargit le conteneur global */
+    gap: 80px;
+    /* On augmente l'espace pour que l'image ne colle pas au texte */
+    max-width: 3000px;
+    /* On élargit le conteneur global */
     margin: 0 auto;
 }
 
-.ynov-content { 
-    flex: 1; /* On rééquilibre les colonnes à 50/50 */
-} 
+.ynov-content {
+    flex: 1;
+    /* On rééquilibre les colonnes à 50/50 */
+}
 
 .ynov-main-title {
-    font-size: 60px; /* On remonte la taille pour plus de puissance */
+    font-size: 60px;
+    /* On remonte la taille pour plus de puissance */
     font-weight: 900;
     line-height: 1.05;
     color: #111;
@@ -144,7 +149,9 @@ body {
     margin-bottom: 40px;
 }
 
-.highlight-green { color: #2ecc71; }
+.highlight-green {
+    color: #2ecc71;
+}
 
 /* Liste des Features */
 .ynov-feature-card {
@@ -180,23 +187,27 @@ body {
 
 /* ── LA COLONNE IMAGE (Agrandie) ── */
 .ynov-visual {
-    flex: 1; 
+    flex: 1;
     display: flex;
-    justify-content: flex-end; /* On la cale bien à droite de sa colonne */
-    align-items: center;  
+    justify-content: flex-end;
+    /* On la cale bien à droite de sa colonne */
+    align-items: center;
 }
 
 .ynov-image-holder {
     width: 100%;
-    max-width: 520px; /* <--- PLUS LARGE (avant 380px) */
-    border-radius: 40px; /* Arrondis plus marqués pour la taille */
+    max-width: 520px;
+    /* <--- PLUS LARGE (avant 380px) */
+    border-radius: 40px;
+    /* Arrondis plus marqués pour la taille */
     overflow: hidden;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
 }
 
 .ynov-image-holder img {
     width: 100%;
-    height: 520px; /* <--- PLUS HAUT (avant 380px) */
+    height: 520px;
+    /* <--- PLUS HAUT (avant 380px) */
     object-fit: cover;
     display: block;
 }
@@ -225,11 +236,29 @@ body {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 992px) {
-    .ynov-grid { flex-direction: column; text-align: center; gap: 50px; }
-    .ynov-feature-card { flex-direction: column; align-items: center; }
-    .ynov-main-title { font-size: 45px; }
-    .ynov-visual { justify-content: center; }
-    .ynov-image-holder { max-width: 100%; height: auto; }
+    .ynov-grid {
+        flex-direction: column;
+        text-align: center;
+        gap: 50px;
+    }
+
+    .ynov-feature-card {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ynov-main-title {
+        font-size: 45px;
+    }
+
+    .ynov-visual {
+        justify-content: center;
+    }
+
+    .ynov-image-holder {
+        max-width: 100%;
+        height: auto;
+    }
 }
 
 .campus-bento-section {
@@ -246,7 +275,8 @@ body {
     transform: translate(-50%, -50%);
     font-size: 1000px;
     font-weight: 900;
-    color: rgba(46, 204, 113, 0.03); /* Encore plus subtil pour ne pas gêner les 14 images */
+    color: rgba(46, 204, 113, 0.03);
+    /* Encore plus subtil pour ne pas gêner les 14 images */
     z-index: 0;
     pointer-events: none;
 }
@@ -254,13 +284,14 @@ body {
 .bento-grid {
     display: grid;
     /* 4 colonnes sur PC pour bien répartir les 14 images */
-    grid-template-columns: repeat(4, 1fr); 
-    grid-auto-rows: 180px; 
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 180px;
     gap: 15px;
     max-width: 1400px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
+    grid-auto-flow: dense;
 }
 
 .bento-item {
@@ -274,8 +305,13 @@ body {
 }
 
 /* Tailles spéciales pour l'effet "image" de ton modèle */
-.bento-item.wide { grid-column: span 2; }
-.bento-item.tall { grid-row: span 2; }
+.bento-item.wide {
+    grid-column: span 2;
+}
+
+.bento-item.tall {
+    grid-row: span 2;
+}
 
 .bento-item:hover {
     transform: scale(1.02);
@@ -286,7 +322,7 @@ body {
 .bento-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
     display: flex;
     align-items: flex-end;
     padding: 20px;
@@ -307,12 +343,19 @@ body {
 
 /* Mobile & Tablette */
 @media (max-width: 1024px) {
-    .bento-grid { grid-template-columns: repeat(3, 1fr); }
+    .bento-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
-    .bento-grid { grid-template-columns: repeat(2, 1fr); }
-    .bento-item.wide { grid-column: span 1; }
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .bento-item.wide {
+        grid-column: span 1;
+    }
 }
 
 
@@ -332,7 +375,8 @@ body {
 
 /* Ajustement pour que l'image de Nice reste bien nette même en grand */
 .bento-item.super-featured .bento-city {
-    font-size: 32px; /* Ville plus grosse pour Nice */
+    font-size: 32px;
+    /* Ville plus grosse pour Nice */
 }
 
 .ynov-footer-light {
@@ -420,7 +464,8 @@ body {
     margin: 0 auto;
     padding: 0 20px;
     display: flex;
-    justify-content: space-between; /* Pousse les blocs aux extrémités */
+    justify-content: space-between;
+    /* Pousse les blocs aux extrémités */
     align-items: center;
     padding-bottom: 40px;
 }
@@ -436,7 +481,8 @@ body {
 }
 
 .f-logo span {
-    color: #2ecc71; /* Vert Ynov */
+    color: #2ecc71;
+    /* Vert Ynov */
 }
 
 .f-tagline {
@@ -503,6 +549,7 @@ body {
         text-align: center;
         gap: 30px;
     }
+
     .footer-nav-block {
         text-align: center;
     }
@@ -514,7 +561,8 @@ body {
     inset: 0;
     background: #ffffff;
     display: flex;
-    flex-direction: column; /* Aligne le logo et la barre verticalement */
+    flex-direction: column;
+    /* Aligne le logo et la barre verticalement */
     justify-content: center;
     align-items: center;
     z-index: 99999;
@@ -528,7 +576,10 @@ body {
     margin-bottom: 20px;
     text-align: center;
 }
-.loader-logo span { color: #2ecc71; }
+
+.loader-logo span {
+    color: #2ecc71;
+}
 
 .loader-bar {
     width: 200px;
@@ -536,7 +587,8 @@ body {
     background: #f0f0f0;
     border-radius: 10px;
     overflow: hidden;
-    margin: 0 auto; /* Force le centrage horizontal */
+    margin: 0 auto;
+    /* Force le centrage horizontal */
 }
 
 .progress {
@@ -548,9 +600,20 @@ body {
 }
 
 @keyframes loadProgress {
-    0% { width: 0%; }
-    15% { width: 75%; } /* Turbo : 75% du chargement en seulement 1.2s (15% de 8s) */
-    100% { width: 100%; } /* Très lent : les derniers 25% prennent les 6.8s restantes */
+    0% {
+        width: 0%;
+    }
+
+    15% {
+        width: 75%;
+    }
+
+    /* Turbo : 75% du chargement en seulement 1.2s (15% de 8s) */
+    100% {
+        width: 100%;
+    }
+
+    /* Très lent : les derniers 25% prennent les 6.8s restantes */
 }
 
 /* Classe de sortie */
@@ -580,8 +643,9 @@ body {
 }
 
 @media (max-width: 992px) {
+
     /* 1. On cache les boutons standards de la navbar pour ne garder que le burger */
-    .main-navbar > .nav-buttons {
+    .main-navbar>.nav-buttons {
         display: none;
     }
 
@@ -596,27 +660,37 @@ body {
         position: fixed;
         top: 35px;
         right: 30px;
-        z-index: 5000; /* Toujours au-dessus du loader et du menu */
+        z-index: 5000;
+        /* Toujours au-dessus du loader et du menu */
     }
 
     .burger-menu span {
         display: block;
         width: 100%;
         height: 3px;
-        background-color: #000; /* Barres noires */
+        background-color: #000;
+        /* Barres noires */
         border-radius: 3px;
         transition: 0.3s;
     }
 
     /* Animation du burger en X quand il est ouvert */
-    .burger-menu.open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
-    .burger-menu.open span:nth-child(2) { opacity: 0; }
-    .burger-menu.open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+    .burger-menu.open span:nth-child(1) {
+        transform: translateY(8.5px) rotate(45deg);
+    }
+
+    .burger-menu.open span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .burger-menu.open span:nth-child(3) {
+        transform: translateY(-8.5px) rotate(-45deg);
+    }
 
     /* 3. Le menu Plein Écran */
     .nav-wrapper {
         position: fixed;
-        top: -100%; 
+        top: -100%;
         left: 0;
         width: 100%;
         height: 100vh;
@@ -627,7 +701,8 @@ body {
         justify-content: center;
         align-items: center;
         transition: top 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
-        visibility: hidden; /* Évite de cliquer sur les liens quand il est fermé */
+        visibility: hidden;
+        /* Évite de cliquer sur les liens quand il est fermé */
     }
 
     .nav-wrapper.open {
@@ -661,7 +736,9 @@ body {
 
 /* Sur PC, on cache le logo du centre du menu */
 @media (min-width: 993px) {
-    .menu-logo-center, .burger-menu {
+
+    .menu-logo-center,
+    .burger-menu {
         display: none !important;
     }
 }

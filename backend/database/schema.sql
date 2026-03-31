@@ -21,6 +21,14 @@ CREATE TABLE users (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Table des posts
+CREATE TABLE posts (
+    id SERIAL PRIMARY KEY,
+    author_id INT REFERENCES users(id) ON DELETE SET NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Table des messages
 CREATE TABLE messages (
     id SERIAL PRIMARY KEY,
@@ -30,6 +38,9 @@ CREATE TABLE messages (
     is_read BOOLEAN DEFAULT FALSE,
     sent_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+CREATE INDEX idx_posts_created_at ON posts (created_at DESC);
+CREATE INDEX idx_messages_sender_receiver ON messages (sender_id, receiver_id);
 
 -- Insertion de quelques campus de test
 INSERT INTO campuses (name, image_url) VALUES 

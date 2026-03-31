@@ -4,128 +4,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusNet — Paris Ynov Campus</title>
+  <title>Ynov Community - Feed</title>
 
-
-  <link rel="stylesheet" href="feed.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/feed.css">
 </head>
 
 <body>
 
-
   <header class="header">
-
     <div class="header__gauche">
-      <div class="logo">
-        <span class="logo__initiales">Ynov</span>
-      </div>
+      <a href="index.html" class="nav-logo-section">
+        <img src="../static/assets/img/logo.png" alt="Ynov" class="nav-logo">
+        <div class="logo-text">
+          <span class="brand-name">YNOV</span>
+          <span class="brand-sub">COMMUNITY</span>
+        </div>
+      </a>
+      <div class="campus-pill">Paris Campus</div>
       <div>
-        <h1 class="titre-site">YFeeds</h1>
-        <p class="sous-titre-site">Paris Ynov Campus</p>
+        <h1 class="titre-site">Fil d'actualite</h1>
+        <p class="sous-titre-site">La communaute Ynov en direct</p>
       </div>
     </div>
-
     <nav class="navigation">
       <a href="#" class="nav-lien nav-lien--actif">Accueil</a>
-      <a href="#" class="nav-lien">Messages</a>
-      <a href="#" class="nav-lien">Profil</a>
+      <a href="messages.html" class="nav-lien">Messages</a>
+      <a href="edit-profil.html" class="nav-lien">Profil</a>
+      <a href="https://ymatch.ynov.com/" class="nav-lien" target="_blank">Ymatch</a>
     </nav>
-
-    <div class="header__droite">
-      <button class="bouton-header">Nouveau post</button>
-      <div class="avatar avatar--header">MA</div>
+    <div class="header__droite" style="display: flex; align-items: center; gap: 15px;">
+      <button id="btn-logout" class="btn-nav btn-danger-light">
+        Déconnexion
+      </button>
+      <div class="avatar avatar--header" id="avatar-header">?</div>
     </div>
-
   </header>
 
-  <!--CONTENU PRINCIPAL -->
   <main class="grille-principale">
 
-    <!--COLONNE GAUCHE-->
-    <aside class="colonne-gauche">
+    <aside class="colonne-gauche" aria-label="Infos profil et tendances">
 
-      <section class="carte">
+      <section class="carte carte--profil">
         <div class="profil-bandeau"></div>
-
         <div class="profil-corps">
-          <div class="avatar avatar--grand">MA</div>
-          <p class="profil-nom">Minna A.</p>
-          <p class="profil-role">Développeuse Web · B2</p>
-
+          <div class="avatar avatar--grand" id="avatar-sidebar">?</div>
+          <p class="profil-nom" id="nom-utilisateur-sidebar">Chargement...</p>
+          <p class="profil-role">Étudiant(e) Ynov</p>
           <div class="profil-stats">
             <div class="stat">
               <span class="stat__chiffre" id="compteur-posts">3</span>
               <span class="stat__label">Posts</span>
             </div>
-
             <div class="stat__separateur"></div>
-
             <div class="stat">
               <span class="stat__chiffre">128</span>
               <span class="stat__label">Connexions</span>
             </div>
           </div>
-
-          <a href="#" class="bouton-profil">Modifier le profil</a>
+          <a href="edit-profil.html" class="bouton-profil">Modifier le profil</a>
         </div>
       </section>
 
       <section class="carte">
         <h2 class="carte-titre">Tendances campus</h2>
         <ul class="liste-tendances">
-          <li class="tendance">
-            <span class="tendance-tag">#Challenge48h</span>
-            <span class="tendance-compte">217 posts</span>
+          <li class="tendance"><span class="tendance-tag">#Challenge48h</span><span class="tendance-compte">217
+              posts</span></li>
+          <li class="tendance"><span class="tendance-tag">#Alternance2026</span><span class="tendance-compte">89
+              posts</span></li>
+          <li class="tendance"><span class="tendance-tag">#ProjetWeb</span><span class="tendance-compte">64 posts</span>
           </li>
-          <li class="tendance">
-            <span class="tendance-tag">#Alternance2026</span>
-            <span class="tendance-compte">89 posts</span>
-          </li>
-          <li class="tendance">
-            <span class="tendance-tag">#ProjetWeb</span>
-            <span class="tendance-compte">64 posts</span>
-          </li>
-          <li class="tendance">
-            <span class="tendance-tag">#YnovParis</span>
-            <span class="tendance-compte">41 posts</span>
+          <li class="tendance"><span class="tendance-tag">#YnovParis</span><span class="tendance-compte">41 posts</span>
           </li>
         </ul>
       </section>
 
     </aside>
 
-    <!--COLONNE CENTRALE -->
     <section class="colonne-centre">
 
       <section class="carte composer-carte">
         <div class="composer-haut">
-          <div class="avatar avatar--petit">MA</div>
+          <div class="avatar avatar--petit" id="avatar-composer">?</div>
           <textarea id="champ-post" class="champ-post"
             placeholder="Partage une actu, une idée, une recherche de groupe…"></textarea>
         </div>
-
         <div class="composer-bas">
           <p class="composer-aide">Ctrl + Entrée pour publier rapidement</p>
+
           <div style="display: flex; gap: 10px;">
-            <button id="bouton-ia" class="bouton-secondaire"
-              style="background: #f0f0f0; border: 1px solid #ccc; padding: 10px; border-radius: 12px; cursor: pointer;">✨
-              Améliorer (IA)</button>
-            <button id="bouton-publier" class="bouton-principal">Publier</button>
+            <button id="bouton-ia" class="btn-nav btn-outline-soft">
+              ✨ Améliorer (IA)
+            </button>
+            <button id="bouton-publier" class="btn-nav btn-light-green">Publier</button>
           </div>
+
         </div>
       </section>
 
       <div class="feed-entete">
         <h2 class="feed-titre">Fil d'actualité</h2>
-        <span class="feed-badge" id="compteur-feed">3 posts</span>
       </div>
 
       <div id="conteneur-posts"></div>
 
     </section>
 
-    <!--COLONNE DROITE -->
-    <aside class="colonne-droite">
+    <aside class="colonne-droite" aria-label="Actualites et news campus">
 
       <section class="carte">
         <h2 class="carte-titre">News Ynov</h2>
@@ -136,7 +123,7 @@
 
   </main>
 
-  <script src="feed.js"></script>
+  <script src="../static/js/feed.js"></script>
 </body>
 
 </html>

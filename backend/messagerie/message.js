@@ -1,4 +1,4 @@
-class Message {
+export default class Message {
     constructor({ id, sender_id, receiver_id, content, sent_at, is_read = false }) {
         if (!sender_id || !receiver_id) {
             throw new Error('sender_id and receiver_id are required');
@@ -39,5 +39,3 @@ class Message {
         return new Message(data);
     }
 }
-
-module.exports = Message;
