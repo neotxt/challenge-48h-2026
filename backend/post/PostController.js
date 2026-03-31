@@ -8,17 +8,23 @@ export class PostController {
         this.postService = new PostService(new PostRepository());
     }
 
-    handleGetAll(req, res) {
-        const posts = this.postService.getAllPosts();
+    async handleGetAll(req, res) {
+        const posts = await this.postService.getAllPosts();
         res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
         res.end(JSON.stringify(posts));
     }
 
-    handleCreate(req, res) {
+    async handleCreate(req, res) {
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
-        req.on('end', () => {
+        req.on('end', async () => {
             const data = JSON.parse(body);
+            const estToxique = await aiService.isToxic(data.contenu);
+                if (estToxique) {
+                    res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                    res.end(JSON.stringify({ error: "Votre message ne respecte pas les règles de la communauté." }));
+                    return; // On arrête tout, le post n'est pas créé
+                }
             // On ajoute "auteur" pour correspondre à ce qu'attend ton frontend
             const newPost = this.postService.createPost(data.contenu, data.auteur || "Anonyme");
             res.writeHead(201, { 'Content-Type': 'application/json' });

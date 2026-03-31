@@ -3,10 +3,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { exec } from 'node:child_process';
 import { UserController } from "./user/UserController.js";
-import { PostController } from "./post/PostController.js"; // Import du nouveau contrôleur
+import { PostController } from "./post/PostController.js";
+import { AiService } from "./ai/AiService.js";
+
 
 const userController = new UserController();
-const postController = new PostController(); // Instance du contrôleur de posts
+const postController = new PostController();
+const aiService = new AiService();
+
 
 const server = http.createServer((req, res) => {
     const urlParts = req.url.split('/');
@@ -66,6 +70,20 @@ const server = http.createServer((req, res) => {
             if (req.method === 'DELETE') return postController.handleDelete(req, res, id);
         }
     }
+
+    if (urlParts[1] === 'ai' && urlParts[2] === 'assist') {
+        if (req.method === 'POST') {
+            let body = '';
+            req.on('data', chunk => { body += chunk.toString(); });
+            req.on('end', async () => {
+                const data = JSON.parse(body);
+                const texteAmeliore = await aiService.ameliorerTexte(data.texte);
+                
+                res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+                res.end(JSON.stringify({ resultat: texteAmeliore }));
+            });
+        }
+}
 
     // 4. ERREUR 404
     res.writeHead(404, { 'Content-Type': 'application/json' });

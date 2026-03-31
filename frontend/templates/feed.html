@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CampusNet — Paris Ynov Campus</title>
 
- 
+
   <link rel="stylesheet" href="feed.css">
 </head>
+
 <body>
 
 
@@ -98,16 +100,18 @@
       <section class="carte composer-carte">
         <div class="composer-haut">
           <div class="avatar avatar--petit">MA</div>
-          <textarea
-            id="champ-post"
-            class="champ-post"
-            placeholder="Partage une actu, une idée, une recherche de groupe…"
-          ></textarea>
+          <textarea id="champ-post" class="champ-post"
+            placeholder="Partage une actu, une idée, une recherche de groupe…"></textarea>
         </div>
 
         <div class="composer-bas">
           <p class="composer-aide">Ctrl + Entrée pour publier rapidement</p>
-          <button id="bouton-publier" class="bouton-principal">Publier</button>
+          <div style="display: flex; gap: 10px;">
+            <button id="bouton-ia" class="bouton-secondaire"
+              style="background: #f0f0f0; border: 1px solid #ccc; padding: 10px; border-radius: 12px; cursor: pointer;">✨
+              Améliorer (IA)</button>
+            <button id="bouton-publier" class="bouton-principal">Publier</button>
+          </div>
         </div>
       </section>
 
@@ -134,4 +138,5 @@
 
   <script src="feed.js"></script>
 </body>
+
 </html>
